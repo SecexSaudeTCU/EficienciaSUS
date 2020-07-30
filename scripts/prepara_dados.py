@@ -11,17 +11,31 @@ Prepara planilhas para clusterização e análise DEA.
 """
 
 import os
+from zipfile import ZipFile
+
 import pandas as pd
-from consts import DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_ORIGINAIS, UF_REGIAO, NATJUR_ESFERA, NATJUR_TIPO_ADMIN_PUB
+
+from consts import ANO, DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIOS, UF_REGIAO, NATJUR_ESFERA, NATJUR_TIPO_ADMIN_PUB
 
 if __name__ == '__main__':
 
-    # Ano dos dados para DEA (para fis de clusterização, estamos sempre utilizando os dados de 2018)
-    ANO = '2019'
+    # Coleta path mais nome da pasta de dados em formato zip (que contém um único arquivo "csv")
+    arquivo_dados_zip = os.path.join(DIRETORIO_DADOS_ORIGINAIS, 'd{ANO}.zip'.format(ANO=ANO))
 
-    # Carrega dados da planilha gerada pelo Eric
-    arquivo_dados = os.path.join(DIRETORIO_DADOS_ORIGINAIS, 'd{ANO}.csv'.format(ANO=ANO))
+    # Inicializa objeto da class ZipFile valendo-se da variável "arquivo_dados_zip"
+    zip = ZipFile(arquivo_dados_zip, 'r')
+
+    # Cria string do nome do arquivo de dados
+    arquivo_dados = 'd{ANO}.csv'.format(ANO=ANO)
+
+    # Utiliza o método "extract" da class ZipFile para extrair o arquivo de nome "arquivo_dados"
+    zip.extract(arquivo_dados)
+
+    # Lê o arquivo de nome "arquivo_dados" como um objeto pandas DataFrame
     df_tudo = pd.read_csv(arquivo_dados)
+
+    # Deleta arquivo de nome "arquivo_dados"
+    os.unlink(arquivo_dados)
 
     # Adicionar coluna REGIAO antes da coluna UF
     regioes = [UF_REGIAO[uf] for uf in df_tudo.UF]

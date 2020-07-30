@@ -3,20 +3,17 @@ Script para analisar escores de eficiência obtidos pela análise DEA.
 """
 
 import os
+
 import pandas as pd
+
+from consts import ANO, DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_RESULTADOS
+
 
 if __name__ == '__main__':
 
-    # Obtem diretório raiz do projeto
-    DIRETORIO_RAIZ_PROJETO = os.path.dirname(os.path.realpath(__file__))
-
-    # Diretórios de dados e resultados
-    DIRETORIO_DADOS_INTERMEDIARIOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'intermediarios')
-    DIRETORIO_DADOS_RESULTADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'resultados')
-
     # Carrega resultados da análise DEA por cluster
-    arquivo_resultado_2018 = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'resultados', 'resultado_hosp_pubs_2018_clusterizado.xlsx')
-    df_resultado = pd.read_excel(arquivo_resultado_2018)
+    arquivo_resultado = os.path.join(DIRETORIO_DADOS_RESULTADOS, 'resultado_hosp_pubs_{ANO}_clusterizado.xlsx'.format(ANO=ANO))
+    df_resultado = pd.read_excel(arquivo_resultado)
 
     # Remove undiades com eficiência 'Infeasible' ou 'Unbounded'
     df_feasible = df_resultado[pd.to_numeric(df_resultado.EFICIENCIA, errors='coerce').notnull()]
@@ -44,9 +41,9 @@ if __name__ == '__main__':
 
     """
     Avaliar a ordenação das médias das eficiências dos TIPO_UNIDADEs e verificar que elas são explicadas pelas seguintes regras:
-      ESPECIALIZADO > GERAL, 
-      PRONTO-SOCORRO > HOSPITAL, 
-      MISTA = GERAL + SOCORRO, 
+      ESPECIALIZADO > GERAL,
+      PRONTO-SOCORRO > HOSPITAL,
+      MISTA = GERAL + SOCORRO,
       H.DIA/ISOLADO é exceção.
     """
     df_feasible.groupby('TIPO_UNIDADE').EFICIENCIA_NORMALIZADA.mean().sort_values()

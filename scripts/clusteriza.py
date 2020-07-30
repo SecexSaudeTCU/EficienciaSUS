@@ -13,15 +13,15 @@ TODO: mover estas análises para script próprio
 """
 
 import os
+
 import pandas as pd
 from sklearn.cluster import KMeans
-from consts import DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIOS
 import matplotlib.pyplot as plt
 
-if __name__ == '__main__':
+from consts import ANO, DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIOS
 
-    #
-    ANO = '2018'
+
+if __name__ == '__main__':
 
     # Número mínimo de unidades por cluster (3 x o número de variáveis utilizadas na DEA)
     NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * 5

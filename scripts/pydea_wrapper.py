@@ -6,8 +6,11 @@ Nota: este wrapper foi feito com as funcionalidades mínimas para uso neste trab
 
 import os
 import tempfile
+
 import pandas as pd
 from pyDEA import main as PyDEAMain
+
+from consts import DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_RESULTADOS
 
 
 TEMPLATE_ARQUIVO_PARAMETROS = """
@@ -141,13 +144,6 @@ class ModeloDEA:
 
 if __name__ == '__main__':
 
-    # Obtem diretório raiz do projeto
-    DIRETORIO_RAIZ_PROJETO = os.path.dirname(os.path.realpath(__file__))
-
-    # Diretórios de dados e resultados
-    DIRETORIO_DADOS_INTERMEDIARIOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'intermediarios')
-    DIRETORIO_DADOS_RESULTADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'resultados')
-
     # Instancia parâmetros do modelo do TCU
     input_categories = ['CNES_PROFISSIONAIS_ENFERMAGEM', 'CNES_MEDICOS', 'CNES_SALAS', 'CNES_LEITOS_SUS']
     output_categories = ['SIA_SIH_VALOR']
@@ -160,5 +156,3 @@ if __name__ == '__main__':
     arquivo_amostra = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS, 'amostra.xlsx')
 
     d = modelo_tcu.executa_por_cluster(arquivo_amostra, DIRETORIO_DADOS_RESULTADOS, 'CLUSTER')
-
-

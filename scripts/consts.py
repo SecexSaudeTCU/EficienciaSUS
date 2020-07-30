@@ -2,15 +2,30 @@
 Constantes utilizadas no projeto.
 """
 
+import pathlib
 import os
 
-# Obtem diretório raiz do projeto
-DIRETORIO_RAIZ_PROJETO = os.path.dirname(os.path.realpath(__file__))
 
-# Diretórios de dados e resultados
-DIRETORIO_DADOS_ORIGINAIS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'originais')
-DIRETORIO_DADOS_INTERMEDIARIOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'intermediarios')
-DIRETORIO_DADOS_RESULTADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados', 'resultados')
+# String do ano dos dados
+ANO = '2019'
+
+# Obtem diretório raiz do projeto
+DIRETORIO_RAIZ_PROJETO = pathlib.Path(__file__).parent.parent
+
+# "String" do PATH já pré-existente de localização dos dados originais
+DIRETORIO_DADOS_ORIGINAIS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'originais')
+
+# "String" do PATH de localização dos dados intermediários
+DIRETORIO_DADOS_INTERMEDIARIOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'intermediarios')
+# Cria "DIRETORIO_DADOS_INTERMEDIARIOS" se não existente
+if not os.path.exists(DIRETORIO_DADOS_INTERMEDIARIOS):
+    os.makedirs(DIRETORIO_DADOS_INTERMEDIARIOS)
+
+# "String" do PATH de localização dos resultados
+DIRETORIO_DADOS_RESULTADOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'resultados')
+# Cria "DIRETORIO_DADOS_RESULTADOS" se não existente
+if not os.path.exists(DIRETORIO_DADOS_RESULTADOS):
+    os.makedirs(DIRETORIO_DADOS_RESULTADOS)
 
 # Mapeamento entre UF e reigão
 UF_REGIAO = {'MS': 'Centro-Oeste', 'DF': 'Centro-Oeste', 'MT': 'Centro-Oeste', 'GO': 'Centro-Oeste',

@@ -4,14 +4,13 @@ e em um única planilha consolidada.
 """
 
 import os
+
 import pandas as pd
+
 from pydea_wrapper import ModeloDEA
-from consts import DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_RESULTADOS
+from consts import ANO, DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_RESULTADOS
 
 if __name__ == '__main__':
-
-    #
-    ANO = 2018
 
     # Parâmetros do modelo do TCU
     input_categories = ['CNES_LEITOS_SUS', 'CNES_MEDICOS', 'CNES_PROFISSIONAIS_ENFERMAGEM', 'CNES_SALAS']
