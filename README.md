@@ -29,28 +29,33 @@ versão 3.5.4 mas sem selecionar a caixa "Add Python 3.5 to PATH";</p>
 
 <p align="justify">2.2.2. Criar um novo projeto com pipenv no diretório raiz da
 pasta descompactada baixada no passo 1 acima usando Python 3.5:</p>
+
 ```
 $ pipenv --python 3.5
 ```
 
 <p align="justify">2.2.3. Instalar separadamente os pacotes Python pandas,
 matplotlib, scikit-learn e pyDEA (este último só funciona em Python < 3.6):</p>
+
 ```
 $ pipenv install nome_do_pacote
 ```
 
 <p align="justify">2.2.4. Entrar no ambiente virtual criado em Python 3.5:</p>
+
 ```
 $ pipenv shell
 ```
 
-<p align="justify">2.3. Mudar para o diretório "scripts" (em Windows):</p>
+<p align="justify">2.3. Mudar para o subdiretório do projeto "scripts" (em Windows):</p>
+
 ```
 $ cd scripts
 ```
 
 <p align="justify">2.4. Executar os scripts prepara_dados.py, clusteriza.py e
 executa_dea.py nessa ordem:</p>
+
 ```
 $ python nome_do_script
 ```
