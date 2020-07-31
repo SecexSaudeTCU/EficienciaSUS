@@ -47,13 +47,13 @@ $ pipenv install nome_do_pacote
 $ pipenv shell
 ```
 
-<p align="justify">2.3. Mudar para o subdiretório do projeto "scripts" (Windows):</p>
+<p align="justify">3. Mudar para o subdiretório do projeto "scripts" (Windows):</p>
 
 ```
 $ cd scripts
 ```
 
-<p align="justify">2.4. Executar os scripts prepara_dados.py, clusteriza.py e
+<p align="justify">4. Executar os scripts prepara_dados.py, clusteriza.py e
 executa_dea.py nessa ordem:</p>
 
 ```
