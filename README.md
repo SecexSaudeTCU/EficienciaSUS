@@ -11,7 +11,7 @@ utilizados para computar essa eficiência relativa das unidades hospitalares pú
 de média e alta complexidade através do uso da técnica Análise Envoltória de Dados
 (Data Envelopment Analysis - DEA) para dados de 2019 de três bases de dados
 custodiadas pelo Datasus (Cadastro Nacional de Estabelecimentos de Saúde - CNES,
-Sistema de Informações Hospilalares - SIH e Sistema de Informações Ambulatoriais - SIA):</p>
+Sistema de Informações Hospitalares - SIH e Sistema de Informações Ambulatoriais - SIA):</p>
 
 <p align="justify">1. Fazer o download
 da versão <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">0.0.1</a>
