@@ -25,7 +25,11 @@ Quando na janela do instalador selecionar a caixa de "Add Python 3.5 to PATH"; o
 <p align="justify">2.2. Caso já tenha uma versão de Python instalada instalar a
 versão 3.5.4 referida no passo 2.1 mas sem selecionar a caixa "Add Python 3.5 to PATH";</p>
 
-<p align="justify">2.2.1. Instalar o pacote Python <a href="https://pypi.org/project/pipenv/">pipenv</a>;</p>
+<p align="justify">2.2.1. Instalar o pacote Python <a href="https://pypi.org/project/pipenv/">pipenv</a>:</p>
+
+```
+$ pip install pipenv
+```
 
 <p align="justify">2.2.2. Criar um novo projeto com pipenv no diretório raiz da
 pasta descompactada baixada no passo 1 acima usando Python 3.5:</p>
