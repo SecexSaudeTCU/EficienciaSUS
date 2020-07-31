@@ -4,8 +4,7 @@ Análises de Eficiência do SUS (Sistema Único de Saúde)
 <p align="justify">Este projeto foi gestacionado no Levantamento de Auditoria
 que teve como objetivo conhecer o nível de eficiência relativa das unidades
 hospitalares públicas de média e alta complexidade e identificar critérios para
-realização de auditoria de avaliação do desempenho delas (processo do TCU:
-TC 015.993/2019-1).</p>
+realização de auditoria de avaliação do desempenho delas (processo do Tribunal de Contas da União: TC 015.993/2019-1).</p>
 
 <p align="justify">As instruções de uso que se seguem servem justamente para reproduzir os passos
 utilizados para computar essa eficiência relativa das unidades hospitalares públicas
@@ -16,11 +15,11 @@ Sistema de Informações Hospilalares - SIH e Sistema de Informações Ambulator
 
 <p align="justify">1. Fazer o download
 da versão <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">0.0.1</a>
-do projeto relativa ao Levantamento de Auditoria e coloca-lo descompactado num
-diretório apropriado;</p>
+deste projeto que se constitui nos códigos utilizados no Levantamento de Auditoria
+e coloca-lo descompactado num diretório apropriado;</p>
 
 <p align="justify">2.1. Se não tiver Python instalado em sua máquina, instalar a
-versão 3.5.4 disponível para download (para Windows) em https://www.python.org/downloads/windows/.
+versão 3.5.4 disponível para download (Windows) em https://www.python.org/downloads/windows/.
 Quando na janela do instalador selecionar a caixa de "Add Python 3.5 to PATH"; ou</p>
 
 <p align="justify">2.2. Caso já tenha uma versão de Python instalada instalar a
@@ -48,7 +47,7 @@ $ pipenv install nome_do_pacote
 $ pipenv shell
 ```
 
-<p align="justify">2.3. Mudar para o subdiretório do projeto "scripts" (em Windows):</p>
+<p align="justify">2.3. Mudar para o subdiretório do projeto "scripts" (Windows):</p>
 
 ```
 $ cd scripts
@@ -61,12 +60,12 @@ executa_dea.py nessa ordem:</p>
 $ python nome_do_script
 ```
 
-<p align="justify">O Relatório deste Levantamento de Auditoria da eficiência em unidades hospitalares
-públicas juntamente com seu Anexo 11, que trata especificamente da análise DEA, podem ser baixados
-em XXX.</p>
+<p align="justify">O Relatório deste Levantamento de Auditoria da eficiência em
+unidades hospitalares públicas juntamente com seu Anexo 11, que trata especificamente
+da análise DEA, podem ser baixados em XXX.</p>
 
-<p align="justify">A tag da versão do projeto relativa a este Levantamento de
-Auditoria é a <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">0.0.1</a>
-onde está disponível para download. Este projeto está sendo reestruturado para permitir, por exemplo,
-complementação de análises de eficiência com o uso da técnica DEA e de outras como
-a Análise da Fronteira Estocástica (Stochastic Frontier Analysis - SFA).</p>
+<p align="justify">Conforme referido acima, a tag da versão do projeto relativa
+a este Levantamento de Auditoria é a <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">0.0.1</a>
+onde está disponível para download. Este projeto está sendo reestruturado para
+permitir, por exemplo, complementação de análises de eficiência com o uso da técnica
+DEA e de outras como a Análise da Fronteira Estocástica (Stochastic Frontier Analysis - SFA).</p>
