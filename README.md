@@ -14,9 +14,10 @@ de média e alta complexidade através do uso da técnica Análise Envoltória d
 custodiadas pelo Datasus (Cadastro Nacional de Estabelecimentos de Saúde - CNES,
 Sistema de Informações Hospilalares - SIH e Sistema de Informações Ambulatoriais - SIA):</p>
 
-<p align="justify">1. Fazer o <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">download</a>
-da versão do projeto relativa ao Levantamento de Auditoria e coloca-lo descompactado
-num diretório apropriado;</p>
+<p align="justify">1. Fazer o download
+da versão <a href="https://github.com/SecexSaudeTCU/EficienciaSUS/releases/tag/0.0.1">0.0.1</a>
+do projeto relativa ao Levantamento de Auditoria e coloca-lo descompactado num
+diretório apropriado;</p>
 
 <p align="justify">2.1. Se não tiver Python instalado em sua máquina, instalar a
 versão 3.5.4 disponível para download (para Windows) em https://www.python.org/downloads/windows/.
