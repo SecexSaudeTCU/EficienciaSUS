@@ -26,4 +26,4 @@ A tag da versão do projeto deste Levantamento de Auditoria é a [0.0.1](https:/
 
 <p align="justify">Este projeto está sendo reestruturado para permitir, por exemplo,
 complementação de análises de eficiência com o uso da técnica DEA e de outras como
-a Análise da Fronteira Estocástica (Stochastic Frontier Analysis - SAF).</p>
+a Análise da Fronteira Estocástica (Stochastic Frontier Analysis - SFA).</p>
