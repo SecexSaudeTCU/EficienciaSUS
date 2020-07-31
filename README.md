@@ -19,11 +19,11 @@ da versão do projeto relativa ao Levantamento de Auditoria e coloca-lo descompa
 num diretório apropriado;</p>
 
 <p align="justify">2.1. Se não tiver Python instalado em sua máquina, instalar a
-versão 3.5.4 disponível (para Windows) em https://www.python.org/downloads/windows/.
+versão 3.5.4 disponível para download (para Windows) em https://www.python.org/downloads/windows/.
 Quando na janela do instalador selecionar a caixa de "Add Python 3.5 to PATH"; ou</p>
 
 <p align="justify">2.2. Caso já tenha uma versão de Python instalada instalar a
-versão 3.5.4 mas sem selecionar a caixa "Add Python 3.5 to PATH";</p>
+versão 3.5.4 referida no passo 2.1 mas sem selecionar a caixa "Add Python 3.5 to PATH";</p>
 
 <p align="justify">2.2.1. Instalar o pacote Python <a href="https://pypi.org/project/pipenv/">pipenv</a>;</p>
 
