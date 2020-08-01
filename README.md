@@ -51,7 +51,7 @@ $ pipenv install nome_do_pacote
 $ pipenv shell
 ```
 
-<p align="justify">3. Mudar para o subdiretório do projeto "scripts" (Windows):</p>
+<p align="justify">3. Mudar para o subdiretório "scripts" do projeto (Windows):</p>
 
 ```
 $ cd scripts
