@@ -108,7 +108,7 @@ if __name__ == '__main__':
     # os valores contidos em "nat_jur_simplificada"
     df_tudo.insert(loc=pos_col_depois_nat_jur, column='NAT_JURIDICA_SIMPLIFICADA', value=nat_jur_siplificada)
 
-    print('********************************')
+    print('\n********************************\n')
     print('Início:', df_tudo.shape)
 
     # Mantém somente unidades de caráter hospitalar
