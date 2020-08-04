@@ -108,31 +108,8 @@ if __name__ == '__main__':
     # Número de clusters arbitrado
     NUMERO_CLUSTERS = 10
 
-    # Número mínimo e máximo de cluster para a análise
-    MIN_CLUSTERS, MAX_CLUSTERS = 4, 30
-
-    # Inicializa o número de clusters
-    numero_clusters = None
-
-    # Treina k-means para cada valor de k
-    for k in range(MIN_CLUSTERS, MAX_CLUSTERS):
-
-        # Treina k-means
-        modelo = KMeans(n_clusters=k, random_state=42)
-        modelo.fit(df_para_clust)
-
-        # Obtém lista de número de elementos por cluster em ordem decrescente
-        num_por_cluster = pd.value_counts(modelo.labels_).sort_values(ascending=False).to_list()
-        print(num_por_cluster)
-
-        # Caso o cluster com menor número de elementos tenha menos do que o NUMERO_MINIMO_UNIDADES_POR_CLUSTER
-        if num_por_cluster[-1] < NUMERO_MINIMO_UNIDADES_POR_CLUSTER:
-            # Salva o número de clusters da iteração anterior e interrompe o loop
-            numero_clusters = k - 1
-            break
-
     # Treina kmeans com o número de cluster identificado anteriormente
-    modelo = KMeans(n_clusters=numero_clusters, random_state=42)
+    modelo = KMeans(n_clusters=NUMERO_CLUSTERS, random_state=42)
     modelo.fit(df_para_clust)
 
     # Adiciona a coluna CLUSTER ao dataframe
@@ -151,6 +128,9 @@ if __name__ == '__main__':
         - Tabela mostrando o número de elementos por cluster de acordo com o valor de k
         - Gráficos de barras mostrando o perfil de procedimentos de cadas cluster
     """
+
+    # Número mínimo e máximo de cluster para a análise
+    MIN_CLUSTERS, MAX_CLUSTERS = 4, 30
 
     # Inicializa lista para armazenar as inércias para plotar o gráficodo cotovelo
     inercias = []
