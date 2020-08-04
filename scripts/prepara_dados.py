@@ -19,6 +19,12 @@ from consts import ANO, DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIO
 
 
 def insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, coluna_nova):
+    """
+    Insere a coluna coluna_nova antes da coluna coluna_posicao do objeto pandas DataFrame
+    frame cujos valores pertencem ao objeto dict dicionario e foram obtidas através da
+    iteração sobre as chaves do objeto dict dicionario que constituem a coluna coluna_base
+    do objeto pandas DataFrame frame
+    """
 
     # Cria objeto list dos valores do objeto dict dicionario chamados pelas chaves key e...
     # contidos na coluna coluna_base do objeto pandas DataFrame frame
@@ -33,8 +39,11 @@ def insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, co
     frame.insert(loc=index_coluna_posicao, column=coluna_nova, value=list_valores)
 
 
-# Retorna valor categórico em faixa de acordo com o valor de "num_leitos"
 def retorna_faixa_leitos(num_leitos):
+    """
+    Retorna um valor 'categórico' de faixa de valor dependendo do valor inteiro
+    num_leitos
+    """
     if num_leitos < 1: return 'NA'
     elif num_leitos < 26: return '1 a 25'
     elif num_leitos < 51: return '26 a 50'
@@ -135,7 +144,6 @@ if __name__ == '__main__':
     # contidos em "se_gerida_oss"
     df_hosp_pubs.insert(loc=pos_col_apos_tipo_unidade, column='SE_GERIDA_OSS', value=se_gerida_oss)
 
-    # Adiciona a coluna com o valor total da produção do hospital, incluindo SIA e SIH
     # Coleta o index do elemento VALOR_SIA pertencente ao objeto list "df_tudo.columns.to_list()"
     pos_col_valor_sia = df_hosp_pubs.columns.to_list().index('VALOR_SIA')
     # Cria objeto pandas Series que é a soma das colunas VALOR_SIA e VALOR_SIH de "df_tudo"
