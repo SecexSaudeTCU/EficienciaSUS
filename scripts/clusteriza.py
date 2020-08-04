@@ -18,7 +18,8 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
-from consts import ANO, DIRETORIO_DADOS
+import consts
+
 
 
 if __name__ == '__main__':
@@ -26,16 +27,16 @@ if __name__ == '__main__':
     # Número mínimo de unidades por cluster (3 x o número de variáveis utilizadas na DEA)
     NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * (4 + 1)
 
-    # Carrega dados da planilha tratada gerada no script prepara_dados.py
-
-    #
-    arquivo_para_clusterizacao = os.path.join(DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=ANO))
-    print(type(arquivo_para_clusterizacao))
+    # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
+    arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=consts.ANO))
+    # Lê o arquivo "xlsx" referido como um objeto pandas DataFrame e coloca a coluna CNES como índice
     df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao, index_col='CNES')
 
-    # Cria df somente com as colunas utilizadas na clusterização (as colunas de procedimentos iniciam na SIA-0101)
-    idx_coluna_primeiro_proc = df_hosp_pubs.columns.to_list().index('SIA-0101')
-    colunas_para_clust = df_hosp_pubs.columns[idx_coluna_primeiro_proc::].to_list()
+    # Cria objeto pandas DataFrame somente com as colunas utilizadas na clusterização...
+    # (as colunas de procedimentos iniciam na SIA-0101)
+    index_coluna_primeiro_proc = df_hosp_pubs.columns.to_list().index('SIA-0101')
+    colunas_para_clust = df_hosp_pubs.columns[index_coluna_primeiro_proc:].to_list()
+    print(colunas_para_clust)
     df_para_clust = df_hosp_pubs[colunas_para_clust]
 
     # Número de clusters determinado pela técnica do cotovelo
@@ -72,8 +73,7 @@ if __name__ == '__main__':
 
     # Salva planilha original com a coluna CLUSTER adicionada
     arquivo_dados_basename = os.path.basename(os.path.splitext(arquivo_para_clusterizacao)[0])
-    arquivo_dados_clusterizados = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS,
-                                               arquivo_dados_basename + '_clusterizado.xlsx')
+    arquivo_dados_clusterizados = os.path.join(consts.DIRETORIO_DADOS, arquivo_dados_basename + '_clusterizado.xlsx')
     df_hosp_pubs.to_excel(arquivo_dados_clusterizados, index=False)
 
     """
@@ -107,8 +107,7 @@ if __name__ == '__main__':
 
     # Cria dataframe e salva planilha com o número de unidades por cluster
     df_num_por_cluster = pd.DataFrame(num_unidades_por_cluster)
-    arquivo_num_por_cluster = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS,
-                                           'num_elementos_por_cluster_{ANO}.xlsx'.format(ANO=ANO))
+    arquivo_num_por_cluster = os.path.join(consts.DIRETORIO_DADOS, 'num_elementos_por_cluster_{ANO}.xlsx'.format(ANO=consts.ANO))
     df_num_por_cluster.to_excel(arquivo_num_por_cluster)
 
     # Plota gráfico da variação da inércia de acordo com o número de clusters
@@ -119,11 +118,11 @@ if __name__ == '__main__':
     plt.title('Gráfico do "cotovelo" para determinação do número de clusters')
     plt.grid()
     plt.xticks(range(MIN_CLUSTERS, MAX_CLUSTERS))
-    arquivo_grafico_inercia = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS, 'kmeans_inercia_vs_k_{ano}.png'.format(ano=ANO))
+    arquivo_grafico_inercia = os.path.join(consts.DIRETORIO_DADOS, 'kmeans_inercia_vs_k_{ano}.png'.format(ano=consts.ANO))
     plt.savefig(arquivo_grafico_inercia)
 
     # Carrega mapeamente entre códigos de subgrupos da SIGTAP e suas descrições
-    arquivo_mapa_subgrupo_desc = os.path.join(DIRETORIO_DADOS_ORIGINAIS, 'sigtap_mapa_codigo_subgrupo.xlsx')
+    arquivo_mapa_subgrupo_desc = os.path.join(consts.DIRETORIO_DADOS, 'sigtap_mapa_codigo_subgrupo.xlsx')
     df_mapa_subgrupo_desc = pd.read_excel(arquivo_mapa_subgrupo_desc, index_col=0)
     df_mapa_subgrupo_desc.index = ['0' + str(codigo) for codigo in df_mapa_subgrupo_desc.index]
     mapa_subgrupo_desc = dict(zip(df_mapa_subgrupo_desc.index, df_mapa_subgrupo_desc.DESCRICAO))
@@ -160,12 +159,10 @@ if __name__ == '__main__':
         ax.grid()
         ax.set_xlim((0, 1.))
         plt.tight_layout()
-        arquivo_grafico_barras_cluster = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS,
-                                                      'cluster_{k}_{ano}.png'.format(ano=ANO, k=k))
+        arquivo_grafico_barras_cluster = os.path.join(consts.DIRETORIO_DADOS, 'cluster_{k}_{ano}.png'.format(ano=consts.ANO, k=k))
         plt.savefig(arquivo_grafico_barras_cluster)
 
     # Salva planilha com os centroids
     df_centroids = pd.DataFrame(centroids)
-    arquivo_centroids = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS,
-                                     'centroids_kmeans_{k}_clusters_{ano}.xlsx'.format(k=NUMERO_CLUSTERS, ano=ANO))
+    arquivo_centroids = os.path.join(consts.DIRETORIO_DADOS, 'centroids_kmeans_{k}_clusters_{ano}.xlsx'.format(k=NUMERO_CLUSTERS, ano=consts.ANO))
     df_centroids.to_excel(arquivo_centroids)

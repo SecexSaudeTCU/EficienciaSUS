@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # "NATJUR_TIPO_ADMIN_PUB"
     insere_coluna_antes_em_df(df_tudo, consts.NATJUR_TIPO_ADMIN_PUB, 'NAT_JURIDICA', 'TIPO', 'TIPO_ADMIN_PUB')
 
-    # Coleta o index do elemento NAT_JURIDICA pertencente ao objeto list "df_tudo.columns.to_list()"
+    # Coleta o index do elemento 'NAT_JURIDICA' pertencente ao objeto list "df_tudo.columns.to_list()"
     pos_coluna_nat_jur = df_tudo.columns.to_list().index('NAT_JURIDICA')
     # Aplica a função "retorna_faixa_leitos" a cada elemento da coluna CNES_LEITOS_SUS de "df_tudo"
     faixa_leitos = df_tudo['CNES_LEITOS_SUS'].apply(retorna_faixa_leitos)
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     df_tudo['VALOR_SIA'].fillna(value=0, inplace=True)
     df_tudo['VALOR_SIH'].fillna(value=0, inplace=True)
 
-    # Coleta o index do elemento NAT_JURIDICA pertencente ao objeto list "df_tudo.columns.to_list()"...
+    # Coleta o index do elemento 'NAT_JURIDICA' pertencente ao objeto list "df_tudo.columns.to_list()"...
     # e acresce o inteiro 1
     pos_col_depois_nat_jur = 1 + df_tudo.columns.to_list().index('NAT_JURIDICA')
     # Cria objeto list dos valores do objeto dict map_nat_jur chamados pelas chaves k e...
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     # coluna CNES em um objeto list dos códigos CNES contidos na coluna CNES
     lista_cnes_oss = pd.read_excel(arquivo_lista_ibross)['CNES'].to_list()
 
-    # Coleta o index do elemento TIPO pertencente ao objeto list "df_tudo.columns.to_list()"
+    # Coleta o index do elemento 'TIPO' pertencente ao objeto list "df_tudo.columns.to_list()"
     pos_col_apos_tipo_unidade = df_hosp_pubs.columns.to_list().index('TIPO')
     # Cria objeto list de elementos "SIM" ou "NA" conforme estão em "lista_cnes_oss" ou não
     se_gerida_oss = ['SIM' if cnes in lista_cnes_oss else 'NA' for cnes in df_hosp_pubs['CNES_ID']]
@@ -135,7 +135,7 @@ if __name__ == '__main__':
     # contidos em "se_gerida_oss"
     df_hosp_pubs.insert(loc=pos_col_apos_tipo_unidade, column='SE_GERIDA_OSS', value=se_gerida_oss)
 
-    # Coleta o index do elemento VALOR_SIA pertencente ao objeto list "df_tudo.columns.to_list()"
+    # Coleta o index do elemento 'VALOR_SIA' pertencente ao objeto list "df_tudo.columns.to_list()"
     pos_col_valor_sia = df_hosp_pubs.columns.to_list().index('VALOR_SIA')
     # Cria objeto pandas Series que é a soma das colunas VALOR_SIA e VALOR_SIH de "df_tudo"
     valor_total = df_hosp_pubs['VALOR_SIA'] + df_hosp_pubs['VALOR_SIH']
@@ -170,11 +170,7 @@ if __name__ == '__main__':
         print(' * {n} linhas revmovidas por conter zero na coluna {coluna}'.format(n=sum(mascara), coluna=coluna))
     print('Número de estabelecimentos ao final do processamento: {n}'.format(n=df_hosp_pubs.shape[0]))
 
-    # Verifica se ao final houve algum hospital com somatória de proporções de procedimentos inferior a 0.99
-    idx = df_hosp_pubs.columns.to_list().index('SIA-0101')
-    num_com_soma_inferior_a_um = sum(df_hosp_pubs[df_hosp_pubs.columns[idx::]].sum(axis=1) < 0.999)
-    assert (num_com_soma_inferior_a_um == 0)
-
-    # Salva planilha para DEA
+    # Coleta o PATH do arquivo "xlsx" a salvar
     arquivo_para_dea = os.path.join(consts.DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=consts.ANO))
+    # Salva o objeto pandas DataFrame "df_hosp_pubs" como um arquivo "xlsx"
     df_hosp_pubs.to_excel(arquivo_para_dea, index=False)
