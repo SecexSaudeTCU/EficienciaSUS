@@ -15,7 +15,8 @@ from zipfile import ZipFile
 
 import pandas as pd
 
-from consts import ANO, DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIOS, UF_REGIAO, NATJUR_ESFERA, NATJUR_TIPO_ADMIN_PUB
+import consts
+
 
 
 def insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, coluna_nova):
@@ -55,14 +56,14 @@ def retorna_faixa_leitos(num_leitos):
 
 if __name__ == '__main__':
 
-    # Coleta path mais nome da pasta de dados em formato zip (que contém um único arquivo "csv")
-    arquivo_dados_zip = os.path.join(DIRETORIO_DADOS_ORIGINAIS, 'd{ANO}.zip'.format(ANO=ANO))
+    # Coleta path da pasta de dados em formato zip (que contém um único arquivo "csv")
+    arquivo_dados_zip = os.path.join(consts.DIRETORIO_DADOS, 'd{ANO}.zip'.format(ANO=consts.ANO))
 
     # Inicializa objeto da class ZipFile valendo-se da variável "arquivo_dados_zip"
     zip = ZipFile(arquivo_dados_zip, 'r')
 
     # Cria string do nome do arquivo de dados
-    arquivo_dados = 'd{ANO}.csv'.format(ANO=ANO)
+    arquivo_dados = 'd{ANO}.csv'.format(ANO=consts.ANO)
 
     # Utiliza o método "extract" da class ZipFile para extrair o arquivo de nome "arquivo_dados"
     zip.extract(arquivo_dados)
@@ -74,15 +75,15 @@ if __name__ == '__main__':
     os.unlink(arquivo_dados)
 
     # Insere a coluna REGIAO antes da coluna UF em "df_tudo" usando o objeto dict "UF_REGIAO"
-    insere_coluna_antes_em_df(df_tudo, UF_REGIAO, 'UF', 'UF', 'REGIAO')
+    insere_coluna_antes_em_df(df_tudo, consts.UF_REGIAO, 'UF', 'UF', 'REGIAO')
 
     # Insere a coluna ESFERA_FEDERATIVA antes da coluna TIPO em "df_tudo" usando o objeto...
     # dict "NATJUR_ESFERA"
-    insere_coluna_antes_em_df(df_tudo, NATJUR_ESFERA, 'NAT_JURIDICA', 'TIPO', 'ESFERA_FEDERATIVA')
+    insere_coluna_antes_em_df(df_tudo, consts.NATJUR_ESFERA, 'NAT_JURIDICA', 'TIPO', 'ESFERA_FEDERATIVA')
 
     # Insere a coluna TIPO_ADMIN_PUB antes da coluna TIPO em "df_tudo" usando o objeto dict...
     # "NATJUR_TIPO_ADMIN_PUB"
-    insere_coluna_antes_em_df(df_tudo, NATJUR_TIPO_ADMIN_PUB, 'NAT_JURIDICA', 'TIPO', 'TIPO_ADMIN_PUB')
+    insere_coluna_antes_em_df(df_tudo, consts.NATJUR_TIPO_ADMIN_PUB, 'NAT_JURIDICA', 'TIPO', 'TIPO_ADMIN_PUB')
 
     # Coleta o index do elemento NAT_JURIDICA pertencente ao objeto list "df_tudo.columns.to_list()"
     pos_coluna_nat_jur = df_tudo.columns.to_list().index('NAT_JURIDICA')
@@ -96,33 +97,22 @@ if __name__ == '__main__':
     df_tudo['VALOR_SIA'].fillna(value=0, inplace=True)
     df_tudo['VALOR_SIH'].fillna(value=0, inplace=True)
 
-    # Mapeamento entre primeiro dígito do código da natureza jurídica e o tipo de natureza jurídica
-    MAP_NAT_JUR = {'1': 'Administração Pública',
-                   '2': 'Entidades Empresariais',
-                   '3': 'Entidades sem Fins Lucrativos',
-                   '4': 'Pessoas Físicas',
-                   '5': 'Organizações Internacionais e Outras Instituições Extraterritoriais'}
-
     # Coleta o index do elemento NAT_JURIDICA pertencente ao objeto list "df_tudo.columns.to_list()"...
     # e acresce o inteiro 1
     pos_col_depois_nat_jur = 1 + df_tudo.columns.to_list().index('NAT_JURIDICA')
     # Cria objeto list dos valores do objeto dict map_nat_jur chamados pelas chaves k e...
     # contidos no primento elemento do objeto string que constitui a coluna NAT_JURIDICA...
     # de "df_tudo"
-    nat_jur_siplificada = [MAP_NAT_JUR[k] for k in df_tudo['NAT_JURIDICA'].str[0]]
+    nat_jur_siplificada = [consts.MAP_NAT_JUR[k] for k in df_tudo['NAT_JURIDICA'].str[0]]
     # Insere em "df_tudo" a coluna NAT_JURIDICA_SIMPLIFICADA depois da coluna NAT_JURIDICA tendo...
     # os valores contidos em "nat_jur_simplificada"
     df_tudo.insert(loc=pos_col_depois_nat_jur, column='NAT_JURIDICA_SIMPLIFICADA', value=nat_jur_siplificada)
 
+    print('********************************')
     print('Início:', df_tudo.shape)
 
-    # Objeto list de tipos constantes da coluna TPPREST que serão mantidos (todos têm ao menos...
-    # 9 unidades com mais de 24 leitos).
-    tipos_unidades_mantidas = ['HOSPITAL GERAL', 'HOSPITAL ESPECIALIZADO', 'UNIDADE MISTA', 'PRONTO SOCORRO GERAL',
-                               'PRONTO SOCORRO ESPECIALIZADO', 'HOSPITAL/DIA - ISOLADO']
-
     # Mantém somente unidades de caráter hospitalar
-    df_hosp = df_tudo[df_tudo['TIPO'].isin(tipos_unidades_mantidas)]
+    df_hosp = df_tudo[df_tudo['TIPO'].isin(consts.TIPOS_UNIDADES_MANTIDAS)]
 
     print('Após remover não-hospitais:', df_hosp.shape)
 
@@ -131,9 +121,10 @@ if __name__ == '__main__':
 
     print('Após remover entidades não públicas:', df_hosp_pubs.shape)
 
-    # Carrega lista de hospitais geridos por OSS de acordo com a lista do IBROSS
-    arquivo_lista_ibross = os.path.join(DIRETORIO_DADOS_ORIGINAIS, 'lista_ibross.xlsx')
-    # Obtém objeto list dos códigos CNES contidos na coluna CNES
+    # Coleta PATH do arquivo "lista_ibross.xlsx"
+    arquivo_lista_ibross = os.path.join(consts.DIRETORIO_DADOS, 'lista_ibross.xlsx')
+    # Lê o arquivo "lista_ibross.xlsx" como um objeto pandas DataFrame e transforma a...
+    # coluna CNES em um objeto list dos códigos CNES contidos na coluna CNES
     lista_cnes_oss = pd.read_excel(arquivo_lista_ibross)['CNES'].to_list()
 
     # Coleta o index do elemento TIPO pertencente ao objeto list "df_tudo.columns.to_list()"
@@ -172,10 +163,8 @@ if __name__ == '__main__':
 
     print('Removendo linhas com valor zero nas colunas utilizadas para DEA...')
 
-    # Objeto list do nome das colunas de dados que são inputs ou outputs da DEA
-    colunas_dea = ['CNES_LEITOS_SUS', 'CNES_SALAS', 'CNES_MEDICOS', 'CNES_PROFISSIONAIS_ENFERMAGEM', 'SIA_SIH_VALOR']
     # Desconsidera hospitais que possuem valor igual a zero para alguma das variáveis utilizadas na DEA
-    for coluna in colunas_dea:
+    for coluna in consts.COLUNAS_DEA:
         mascara = df_hosp_pubs[coluna] == 0
         df_hosp_pubs = df_hosp_pubs[~mascara]
         print(' * {n} linhas revmovidas por conter zero na coluna {coluna}'.format(n=sum(mascara), coluna=coluna))
@@ -187,5 +176,5 @@ if __name__ == '__main__':
     assert (num_com_soma_inferior_a_um == 0)
 
     # Salva planilha para DEA
-    arquivo_para_dea = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=ANO))
+    arquivo_para_dea = os.path.join(consts.DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=consts.ANO))
     df_hosp_pubs.to_excel(arquivo_para_dea, index=False)

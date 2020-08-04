@@ -13,19 +13,13 @@ ANO = '2019'
 DIRETORIO_RAIZ_PROJETO = pathlib.Path(__file__).parent.parent
 
 # "String" do PATH já pré-existente de localização dos dados originais
-DIRETORIO_DADOS_ORIGINAIS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'originais')
+DIRETORIO_DADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados')
 
-# "String" do PATH de localização dos dados intermediários
-DIRETORIO_DADOS_INTERMEDIARIOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'intermediarios')
-# Cria "DIRETORIO_DADOS_INTERMEDIARIOS" se não existente
-if not os.path.exists(DIRETORIO_DADOS_INTERMEDIARIOS):
-    os.makedirs(DIRETORIO_DADOS_INTERMEDIARIOS)
-
-# "String" do PATH de localização dos resultados
-DIRETORIO_DADOS_RESULTADOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados', 'resultados')
+# "String" do PATH de localização dos resultadoss
+DIRETORIO_RESULTADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'resultados')
 # Cria "DIRETORIO_DADOS_RESULTADOS" se não existente
-if not os.path.exists(DIRETORIO_DADOS_RESULTADOS):
-    os.makedirs(DIRETORIO_DADOS_RESULTADOS)
+if not os.path.exists(DIRETORIO_RESULTADOS):
+    os.makedirs(DIRETORIO_RESULTADOS)
 
 # Mapeamento entre UF e reigão
 UF_REGIAO = {'MS': 'Centro-Oeste', 'DF': 'Centro-Oeste', 'MT': 'Centro-Oeste', 'GO': 'Centro-Oeste',
@@ -172,3 +166,26 @@ NATJUR_TIPO_ADMIN_PUB = {'1. ADMINISTRAÇÃO PÚBLICA': 'OUTROS',
                          '502-9 REPRESENTAÇÃO DIPLOMÁTICA ESTRANGEIRA': 'OUTROS',
                          '503-7 OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS': 'OUTROS',
                          'NÃO ESPECIFICADO OU IGNORADO': 'OUTROS'}
+
+# Mapeamento entre primeiro dígito do código da natureza jurídica e o tipo de natureza jurídica
+MAP_NAT_JUR = {'1': 'Administração Pública',
+               '2': 'Entidades Empresariais',
+               '3': 'Entidades sem Fins Lucrativos',
+               '4': 'Pessoas Físicas',
+               '5': 'Organizações Internacionais e Outras Instituições Extraterritoriais'}
+
+# Objeto list de tipos constantes da coluna TPPREST que serão mantidos (todos têm ao menos...
+# 9 unidades com mais de 24 leitos).
+TIPOS_UNIDADES_MANTIDAS = ['HOSPITAL GERAL',
+                           'HOSPITAL ESPECIALIZADO',
+                           'UNIDADE MISTA',
+                           'PRONTO SOCORRO GERAL',
+                           'PRONTO SOCORRO ESPECIALIZADO',
+                           'HOSPITAL/DIA - ISOLADO']
+
+# Objeto list do nome das colunas de dados que são inputs ou outputs da DEA
+COLUNAS_DEA = ['CNES_LEITOS_SUS',
+               'CNES_SALAS',
+               'CNES_MEDICOS',
+               'CNES_PROFISSIONAIS_ENFERMAGEM',
+               'SIA_SIH_VALOR']

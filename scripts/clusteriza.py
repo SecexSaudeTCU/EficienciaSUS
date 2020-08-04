@@ -18,16 +18,19 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
-from consts import ANO, DIRETORIO_DADOS_ORIGINAIS, DIRETORIO_DADOS_INTERMEDIARIOS
+from consts import ANO, DIRETORIO_DADOS
 
 
 if __name__ == '__main__':
 
     # Número mínimo de unidades por cluster (3 x o número de variáveis utilizadas na DEA)
-    NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * 5
+    NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * (4 + 1)
 
-    # Carrega dados da planilha gerada pelo Eric
-    arquivo_para_clusterizacao = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=ANO))
+    # Carrega dados da planilha tratada gerada no script prepara_dados.py
+
+    #
+    arquivo_para_clusterizacao = os.path.join(DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=ANO))
+    print(type(arquivo_para_clusterizacao))
     df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao, index_col='CNES')
 
     # Cria df somente com as colunas utilizadas na clusterização (as colunas de procedimentos iniciam na SIA-0101)
