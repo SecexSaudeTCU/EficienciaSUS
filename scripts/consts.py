@@ -13,10 +13,10 @@ ANO = '2019'
 DIRETORIO_RAIZ_PROJETO = pathlib.Path(__file__).parent.parent
 
 # "String" do PATH já pré-existente de localização dos dados originais
-DIRETORIO_DADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'dados')
+DIRETORIO_DADOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'dados')
 
 # "String" do PATH de localização dos resultadoss
-DIRETORIO_RESULTADOS = os.path.join(DIRETORIO_RAIZ_PROJETO, 'resultados')
+DIRETORIO_RESULTADOS = os.path.join(str(DIRETORIO_RAIZ_PROJETO), 'resultados')
 # Cria "DIRETORIO_DADOS_RESULTADOS" se não existente
 if not os.path.exists(DIRETORIO_RESULTADOS):
     os.makedirs(DIRETORIO_RESULTADOS)

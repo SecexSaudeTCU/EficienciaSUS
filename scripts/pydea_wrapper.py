@@ -10,7 +10,6 @@ import tempfile
 import pandas as pd
 from pyDEA import main as PyDEAMain
 
-from consts import DIRETORIO_DADOS_INTERMEDIARIOS, DIRETORIO_DADOS_RESULTADOS
 
 
 TEMPLATE_ARQUIVO_PARAMETROS = """
@@ -139,20 +138,5 @@ class ModeloDEA:
             diretorio_saida, 'resultado_{arquivo_entrada}.xlsx'.format(arquivo_entrada=arquivo_entrada_basename)
         )
         df.to_excel(arquivo_resultado_final, index=False)
+
         return df
-
-
-if __name__ == '__main__':
-
-    # Instancia parâmetros do modelo do TCU
-    input_categories = ['CNES_PROFISSIONAIS_ENFERMAGEM', 'CNES_MEDICOS', 'CNES_SALAS', 'CNES_LEITOS_SUS']
-    output_categories = ['SIA_SIH_VALOR']
-    virtual_weight_restrictions = ['CNES_SALAS >= 0.09', 'CNES_PROFISSIONAIS_ENFERMAGEM >= 0.09', 'CNES_LEITOS_SUS >= 0.16', 'CNES_MEDICOS >= 0.16']
-
-    # Instancia modelo
-    modelo_tcu = ModeloDEA(input_categories, output_categories, virtual_weight_restrictions)
-
-    # Arquivos de dados para análise DEA com variáveis do TCU
-    arquivo_amostra = os.path.join(DIRETORIO_DADOS_INTERMEDIARIOS, 'amostra.xlsx')
-
-    d = modelo_tcu.executa_por_cluster(arquivo_amostra, DIRETORIO_DADOS_RESULTADOS, 'CLUSTER')
