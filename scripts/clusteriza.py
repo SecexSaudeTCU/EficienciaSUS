@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
     arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=consts.ANO))
     # Lê o arquivo "xlsx" referido como um objeto pandas DataFrame e coloca a coluna CNES como índice
-    df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao, index_col='CNES')
+    df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao)
 
     # Coleta o index do elemento 'SIA-0101' pertencente ao objeto list "df_hosp_pubs.columns.to_list()"
     index_coluna_primeiro_proc = df_hosp_pubs.columns.to_list().index('SIA-0101')
@@ -118,4 +118,5 @@ if __name__ == '__main__':
     # Salva planilha original com a coluna CLUSTER adicionada
     arquivo_dados_basename = os.path.basename(os.path.splitext(arquivo_para_clusterizacao)[0])
     arquivo_dados_clusterizados = os.path.join(consts.DIRETORIO_DADOS, arquivo_dados_basename + '_clusterizado.xlsx')
+
     df_hosp_pubs.to_excel(arquivo_dados_clusterizados, index=False)

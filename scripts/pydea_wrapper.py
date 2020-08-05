@@ -51,13 +51,18 @@ class ModeloDEA:
 
         Nota: a primeira coluna deve conter os nomes das DMUs.
         """
-        # Carrega dados e mantém somente 1ª coluna (nomes das DMUs) e colunas utilizadas na DEA (entradas e saídas)
+
+        # Lê o arquivo "data_file" (imbuído do PATH) como um objeto pandas DataFrame
         df = pd.read_excel(data_file)
+        # Mantém em "df" somente 1ª coluna (nomes das DMUs) e colunas utilizadas na DEA (entradas e saídas)
         df = df[[df.columns[0]] + self.input_categories + self.output_categories]
 
-        # Salva arquivo temporário com dados para DEA
+        # Coleta apenas o nome do arquivo de "data_file"
         arquivo_entrada_basename = os.path.basename(data_file)
+
+        # Cria diretório temporário para o arquivo de nome "arquivo_entrada_basename"
         arquivo_entrada_temp = os.path.join(tempfile.gettempdir(), arquivo_entrada_basename)
+        # Coloca os dados de "df" num arquivo "xlsx" localizado no diretório temporário
         df.to_excel(arquivo_entrada_temp, index=False)
 
         # Cria string com o conteúdo do arquivo de parâmetros
