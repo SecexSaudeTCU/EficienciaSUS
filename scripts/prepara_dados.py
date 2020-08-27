@@ -48,7 +48,7 @@ def retorna_faixa_leitos(num_leitos):
     if num_leitos < 1: return 'NA'
     elif num_leitos < 26: return '1 a 25'
     elif num_leitos < 51: return '26 a 50'
-    elif num_leitos < 201: return '101 a 200'
+    elif num_leitos < 201: return '51 a 200'
     elif num_leitos < 301: return '201 a 300'
     return 'Mais de 300'
 
@@ -147,14 +147,10 @@ if __name__ == '__main__':
     df_hosp_pubs = df_hosp_pubs.rename(columns={'CNES_ID': 'CNES',
                                                 'MUNNOME': 'MUNICIPIO',
                                                 'ATIVIDADE': 'ATIVIDADE_ENSINO',
-                                                'CNES_MEDICOS (PELO CNS)': 'CNES_MEDICOS',
-                                                'CNES_PROFISSIONAIS_ENFERMAGEM (PELO CNS)': 'CNES_PROFISSIONAIS_ENFERMAGEM',
                                                 'TIPO': 'TIPO_UNIDADE'})
 
     # Remove as colunas mencionadas
-    df_hosp_pubs = df_hosp_pubs.drop(columns=['CNES_MEDICOS (PELO NOME)',
-                                              'CNES_PROFISSIONAIS_ENFERMAGEM (PELO NOME)',
-                                              'GESTAO',  # Talvez esta coluna seja interessante para comparar OSS gerida por Estado x Municio
+    df_hosp_pubs = df_hosp_pubs.drop(columns=['GESTAO',  # Talvez esta coluna seja interessante para comparar OSS gerida por Estado x Municio
                                               'PRESTADOR',
                                               'VALOR_SIA',
                                               'VALOR_SIH',

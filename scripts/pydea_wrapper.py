@@ -65,7 +65,7 @@ class ModeloDEA:
         # Coloca os dados de "df" num arquivo "xlsx" localizado no diretório temporário
         df.to_excel(arquivo_entrada_temp, index=False)
 
-        # Cria string com o conteúdo do arquivo de parâmetros
+        # Cria string com o conteúdo do arquivo de parâmetros "TEMPLATE_ARQUIVO_PARAMETROS"
         params_file = TEMPLATE_ARQUIVO_PARAMETROS.format(
             data_file=arquivo_entrada_temp,
             input_categories=';'.join(self.input_categories),
@@ -82,8 +82,8 @@ class ModeloDEA:
             # Retorna o ponteiro para o início do arquivo
             arquivo_parametros_tmp.seek(0)
 
-            # Executa modelo
             print('Treinando modelo DEA com dados da planilha "{}"'.format(data_file))
+            # Executa modelo
             PyDEAMain.main(filename=arquivo_parametros_tmp.name, output_dir=diretorio_saida)
             print('Treino concluído.\n\n')
 
@@ -94,48 +94,60 @@ class ModeloDEA:
         e uma cópia da planilha de entrada é salva com a coluna EFICIENCIA adicionada com os escores calculados
         para cada DMU não normalizados.
         """
-        # Obtém lita de clusters
+        # Lê o arquivo "data_file" (imbuído do PATH) como um objeto pandas DataFrame
         df = pd.read_excel(data_file)
+
+        # Obtém objeto Numpy ndarray dos valores únicos de numeração de cluster contidos...
+        # na coluna coluna_cluster de "df"
         clusters = df[coluna_cluster].unique()
 
-        # Obtém diretório temporário
+        # Cria diretório temporário
         diretorio_temporario = tempfile.gettempdir()
 
-        # Adicona coluna para o score DEA ao DF
+        # Adiciona a coluna EFICIENCIA para o score DEA ao DF com valor default -1
         df['EFICIENCIA'] = -1
 
-        # Para cada cluster
+        # Itera sobre cada numeração de cluster
         for cluster in clusters:
 
             print('Treinando DEA para cluster {cluster}...'.format(cluster=cluster))
 
-            # Obtém df somente com unidades do cluster
+            # Obtém objeto pandas DataFrame somente com unidades hospitalares do cluster "cluster"
             df_filtrado = df[df[coluna_cluster] == cluster]
 
-            # Remove colunas que não possuem entradas e saídas para a DEA
+            # Obtém objeto list dos nomes das colunas de "df_filtrado"
             lista_colunas_sem_coluna_cluster = df_filtrado.columns.to_list()
+            # Remove o objeto string coluna_cluster do referido objeto list
             lista_colunas_sem_coluna_cluster.remove(coluna_cluster)
+            # Remove o objeto string "EFICIENCIA" do referido objeto list
             lista_colunas_sem_coluna_cluster.remove('EFICIENCIA')
+            # Reconstroi "df_filtrado" apenas com as colunas presentes em "lista_colunas_sem_coluna_cluster"
             df_filtrado = df_filtrado[lista_colunas_sem_coluna_cluster]
 
-            # Arquivo para salvar temporariamente o df com registros do cluster
+            # Coleta o nome do arquivo "data_file" sem extensão
             arquivo_entrada_basename = os.path.basename(os.path.splitext(data_file)[0])
+            # Cria arquivo "xlsx" do cluster "cluster" no diretório temporário
             arquivo_df_cluster = os.path.join(diretorio_temporario, '{arquivo_entrada}_cluster_{cluster}.xlsx'
                                               .format(arquivo_entrada=arquivo_entrada_basename, cluster=cluster))
 
-            # Salva arquivo
+            # Coloca os dados de "df_filtrado" no arquivo "xlsx" do cluster "cluster" localizado...
+            # no diretório temporário
             df_filtrado.to_excel(arquivo_df_cluster)
 
-            # Executa DEA no arquivo de saída
+            # Chama o método "executa" da mesma class
             self.executa(arquivo_df_cluster, diretorio_saida)
 
-            # Carrega resultados do arquivo
+            # Coleta o nome do arquivo "arquivo_df_cluster" sem extensão e acresce o objeto string "_result.xlsx"
             arquivo_resultado_basename = os.path.splitext(os.path.basename(arquivo_df_cluster))[0] + '_result.xlsx'
+            # Cria arquivo "xlsx" de resultados do cluster "cluster" no diretório "diretorio_saida"
             arquivo_resultado = os.path.join(diretorio_saida, arquivo_resultado_basename)
+            print(arquivo_resultado)
+            # Lê o arquivo em formato "xlsx" "arquivo_resultado" como um objeto pandas DataFrame...
+            # e desconsidera a primeira linha
             df_resultado = pd.read_excel(arquivo_resultado, skiprows=1)
 
             # Adicionar resultado de eficiência ao dataframe original e salva resultado
-            df.loc[df.index[df[coluna_cluster] == cluster], 'EFICIENCIA'] = df_resultado.Efficiency.to_list()
+            df.loc[df.index[df[coluna_cluster] == cluster], 'EFICIENCIA'] = df_resultado['Efficiency'].to_list()
 
         # Salva arquivo de entrada com a coluna EFICIENCIA com respectivos escores DEA
         arquivo_entrada_basename = os.path.basename(os.path.splitext(data_file)[0])
