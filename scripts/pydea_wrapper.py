@@ -10,6 +10,8 @@ import tempfile
 import pandas as pd
 from pyDEA import main as PyDEAMain
 
+import consts
+
 
 
 TEMPLATE_ARQUIVO_PARAMETROS = """
@@ -101,7 +103,7 @@ class ModeloDEA:
         # Obtém diretório temporário
         diretorio_temporario = tempfile.gettempdir()
 
-        # Adicona coluna para o score DEA ao DF
+        # Adiciona coluna para o score DEA ao df
         df['EFICIENCIA'] = -1
 
         # Para cada cluster

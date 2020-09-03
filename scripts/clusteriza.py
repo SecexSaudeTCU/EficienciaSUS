@@ -29,14 +29,14 @@ def distancia_x_reta_ab(x, a, b):
     return np.linalg.norm(np.cross(b - a, a - x))/np.linalg.norm(b - a)
 
 
-
-if __name__ == '__main__':
+def clusteriza(first_year=2017, last_year=2019):
 
     # Número mínimo de unidades por cluster (3 x o número de inputs e outputs utilizadas na DEA)
     NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * (4 + 1)
 
     # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
-    arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS, 'hosp_pubs_{ANO}.xlsx'.format(ANO=consts.ANO))
+    arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS,
+                                              f'dados_para_clusterizacao_{first_year}_a_{last_year}.xlsx')
     # Lê o arquivo "xlsx" referido como um objeto pandas DataFrame e coloca a coluna CNES como índice
     df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao)
 
@@ -108,15 +108,29 @@ if __name__ == '__main__':
     # Número de clusters arbitrado
     NUMERO_CLUSTERS = 10
 
+    # Número de clusters ótimo
+    NUMERO_CLUSTERS = D.index(max(D)) + 1
+
     # Treina kmeans com o número de cluster identificado anteriormente
     modelo = KMeans(n_clusters=NUMERO_CLUSTERS, random_state=42)
     modelo.fit(df_para_clust)
 
+    # Elimina colunas desnecessárias
+    nomes_colunas = df_hosp_pubs.columns.to_list()
+    nomes_colunas_menos_cnes = list(set(nomes_colunas) - set(['CNES']))
+    df_hosp_pubs.drop(columns=nomes_colunas_menos_cnes, inplace=True)
+
     # Adiciona a coluna CLUSTER ao dataframe
     df_hosp_pubs.insert(loc=1, column='CLUSTER', value=modelo.labels_)
 
-    # Salva planilha original com a coluna CLUSTER adicionada
-    arquivo_dados_basename = os.path.basename(os.path.splitext(arquivo_para_clusterizacao)[0])
-    arquivo_dados_clusterizados = os.path.join(consts.DIRETORIO_DADOS, arquivo_dados_basename + '_clusterizado.xlsx')
+    #
+    df_hosp_pubs['CNES'] = df_hosp_pubs['CNES'].apply(lambda x: str(x).zfill(7))
 
-    df_hosp_pubs.to_excel(arquivo_dados_clusterizados, index=False)
+    # Salva "df_hosp_pub" em arquivo xlsx com a coluna CLUSTER adicionada
+    df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_clusterizados_{first_year}_a_{last_year}.xlsx'),
+                          index=False)
+
+
+if __name__ == '__main__':
+
+    clusteriza(2017, 2019)
