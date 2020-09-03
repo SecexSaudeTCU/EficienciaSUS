@@ -22,11 +22,11 @@ if not os.path.exists(DIRETORIO_RESULTADOS):
     os.makedirs(DIRETORIO_RESULTADOS)
 
 # Mapeamento entre UF e reigão
-UF_REGIAO = {'MS': 'Centro-Oeste', 'DF': 'Centro-Oeste', 'MT': 'Centro-Oeste', 'GO': 'Centro-Oeste',
-             'PE': 'Nordeste', 'SE': 'Nordeste', 'BA': 'Nordeste', 'AL': 'Nordeste', 'MA': 'Nordeste',
-             'PI': 'Nordeste', 'PB': 'Nordeste', 'CE': 'Nordeste', 'RN': 'Nordeste', 'AC': 'Norte', 'AM': 'Norte',
-             'AP': 'Norte', 'PA': 'Norte', 'RR': 'Norte', 'RO': 'Norte', 'TO': 'Norte', 'SP': 'Sudeste',
-             'ES': 'Sudeste', 'RJ': 'Sudeste', 'MG': 'Sudeste', 'PR': 'Sul', 'SC': 'Sul', 'RS': 'Sul'}
+UF_REGIAO = {'MS': 'CENTRO-OESTE', 'DF': 'CENTRO-OESTE', 'MT': 'CENTRO-OESTE', 'GO': 'CENTRO-OESTE',
+             'PE': 'NORDESTE', 'SE': 'NORDESTE', 'BA': 'NORDESTE', 'AL': 'NORDESTE', 'MA': 'NORDESTE',
+             'PI': 'NORDESTE', 'PB': 'NORDESTE', 'CE': 'NORDESTE', 'RN': 'NORDESTE', 'AC': 'NORTE', 'AM': 'NORTE',
+             'AP': 'NORTE', 'PA': 'NORTE', 'RR': 'NORTE', 'RO': 'NORTE', 'TO': 'NORTE', 'SP': 'SUDESTE',
+             'ES': 'SUDESTE', 'RJ': 'SUDESTE', 'MG': 'SUDESTE', 'PR': 'SUL', 'SC': 'SUL', 'RS': 'SUL'}
 
 # Mapeamento entre natureza jurídica e esfera da federação, quando aplicável
 NATJUR_ESFERA = {'1. ADMINISTRAÇÃO PÚBLICA': 'OUTROS', '101-5 ÓRGÃO PÚBLICO DO PODER EXECUTIVO FEDERAL': 'FEDERAL',
@@ -91,7 +91,8 @@ NATJUR_ESFERA = {'1. ADMINISTRAÇÃO PÚBLICA': 'OUTROS', '101-5 ÓRGÃO PÚBLIC
                  '412-4 PRODUTOR RURAL (PESSOA FÍSICA)': 'OUTROS',
                  '5. ORGANIZAÇÕES INTERNACIONAIS E OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS': 'OUTROS',
                  '501-0 ORGANIZAÇÃO INTERNACIONAL': 'OUTROS', '502-9 REPRESENTAÇÃO DIPLOMÁTICA ESTRANGEIRA': 'OUTROS',
-                 '503-7 OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS': 'OUTROS', 'NÃO ESPECIFICADO OU IGNORADO': 'OUTROS'}
+                 '503-7 OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS': 'OUTROS', 'NÃO ESPECIFICADO OU IGNORADO': 'OUTROS',
+                 'NOT AVAILABLE': 'OUTROS'}
 
 # Mapeamento entre natureza jurídica e tipo de administrção pública DIRETA x INDIRETA
 NATJUR_TIPO_ADMIN_PUB = {'1. ADMINISTRAÇÃO PÚBLICA': 'OUTROS',
@@ -165,16 +166,18 @@ NATJUR_TIPO_ADMIN_PUB = {'1. ADMINISTRAÇÃO PÚBLICA': 'OUTROS',
                          '501-0 ORGANIZAÇÃO INTERNACIONAL': 'OUTROS',
                          '502-9 REPRESENTAÇÃO DIPLOMÁTICA ESTRANGEIRA': 'OUTROS',
                          '503-7 OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS': 'OUTROS',
-                         'NÃO ESPECIFICADO OU IGNORADO': 'OUTROS'}
+                         'NÃO ESPECIFICADO OU IGNORADO': 'OUTROS',
+                         'NOT AVAILABLE': 'OUTROS'}
 
 # Mapeamento entre primeiro dígito do código da natureza jurídica e o tipo de natureza jurídica
-MAP_NAT_JUR = {'1': 'Administração Pública',
-               '2': 'Entidades Empresariais',
-               '3': 'Entidades sem Fins Lucrativos',
-               '4': 'Pessoas Físicas',
-               '5': 'Organizações Internacionais e Outras Instituições Extraterritoriais'}
+MAP_NAT_JUR = {'1': 'ADMINISTRAÇÂO PÚBLICA',
+               '2': 'ENTIDADES EMPRESARIAIS',
+               '3': 'ENTIDADES SEM FINS LUCRATIVOS',
+               '4': 'PESSOAS FÍSICAS',
+               '5': 'ORGANIZAÇÕES INTERNACIONAIS E OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS',
+               'N': 'OUTROS'}
 
-# Objeto list de tipos constantes da coluna TPPREST que serão mantidos (todos têm ao menos...
+# Objeto list de tipos constantes da coluna TIPO que serão mantidos (todos têm ao menos...
 # 9 unidades com mais de 24 leitos).
 TIPOS_UNIDADES_MANTIDAS = ['HOSPITAL GERAL',
                            'HOSPITAL ESPECIALIZADO',
@@ -189,3 +192,19 @@ COLUNAS_DEA = ['CNES_LEITOS_SUS',
                'CNES_MEDICOS',
                'CNES_PROFISSIONAIS_ENFERMAGEM',
                'SIA_SIH_VALOR']
+
+COLUNAS_CATEGORICAS = ['CNES',
+                       'CLUSTER',
+                       'REGIAO',
+                       'UF',
+                       'MUNICIPIO',
+                       'GESTAO',
+                       'ATIVIDADE_ENSINO',
+                       'ESFERA_FEDERATIVA',
+                       'TIPO_ADMIN_PUB',
+                       'SE_GERIDA_OSS',
+                       'TIPO_UNIDADE',
+                       'FAIXA_LEITOS',
+                       'NAT_JURIDICA',
+                       'NAT_JURIDICA_SIMPLIFICADA',
+                       'FILANTROPICO']
