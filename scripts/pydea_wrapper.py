@@ -106,11 +106,7 @@ class ModeloDEA:
         # Cria diretório temporário
         diretorio_temporario = tempfile.gettempdir()
 
-<<<<<<< HEAD
-        # Adiciona a coluna EFICIENCIA para o score DEA ao DF com valor default -1
-=======
         # Adiciona coluna para o score DEA ao df
->>>>>>> teste_dea
         df['EFICIENCIA'] = -1
 
         # Itera sobre cada numeração de cluster
@@ -152,14 +148,30 @@ class ModeloDEA:
             # e desconsidera a primeira linha
             df_resultado = pd.read_excel(arquivo_resultado, skiprows=1)
 
-            # Adicionar resultado de eficiência ao dataframe original e salva resultado
+            # Adiciona resultado de eficiência ao dataframe original e salva resultado
             df.loc[df.index[df[coluna_cluster] == cluster], 'EFICIENCIA'] = df_resultado['Efficiency'].to_list()
 
-        # Salva arquivo de entrada com a coluna EFICIENCIA com respectivos escores DEA
+        # Remove undiades com eficiência 'Infeasible' ou 'Unbounded'
+        df_feasible = df[pd.to_numeric(df['EFICIENCIA'], errors='coerce').notnull()]
+        df_feasible['EFICIENCIA'] = df_feasible['EFICIENCIA'].astype('float')
+
+        # Calcula médias e desvios padrões por cluster
+        medias = df_feasible.groupby(['CLUSTER'])['EFICIENCIA'].mean().to_dict()
+        desvios = df_feasible.groupby(['CLUSTER'])['EFICIENCIA'].std().to_dict()
+
+        # Padroniza escores por cluster
+        std_scores = pd.Series([
+            (e - medias[c]) / desvios[c] for c, e in zip(df_feasible['CLUSTER'].to_list(), df_feasible['EFICIENCIA'].to_list())
+        ])
+
+        # Normaliza eficiências para o intervalo de 0 a 1
+        df_feasible.loc[:, 'EFICIENCIA_NORMALIZADA'] = ((std_scores - std_scores.min()) / (std_scores.max() - std_scores.min())).values
+
+        # Salva arquivo de entrada com as colunas EFICIENCIA e EFICIENCIA_NORMALIZADA com respectivos escores DEA
         arquivo_entrada_basename = os.path.basename(os.path.splitext(data_file)[0])
         arquivo_resultado_final = os.path.join(
             diretorio_saida, 'resultado_{arquivo_entrada}.xlsx'.format(arquivo_entrada=arquivo_entrada_basename)
         )
-        df.to_excel(arquivo_resultado_final, index=False)
+        df_feasible.to_excel(arquivo_resultado_final, index=False)
 
         return df

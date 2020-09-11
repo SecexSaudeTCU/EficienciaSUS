@@ -29,14 +29,22 @@ def distancia_x_reta_ab(x, a, b):
     return np.linalg.norm(np.cross(b - a, a - x))/np.linalg.norm(b - a)
 
 
-def clusteriza(first_year=2017, last_year=2019):
+def clusteriza(first_year=2017, last_year=False):
 
     # Número mínimo de unidades por cluster (3 x o número de inputs e outputs utilizadas na DEA)
     NUMERO_MINIMO_UNIDADES_POR_CLUSTER = 3 * (4 + 1)
 
-    # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
-    arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS,
-                                              f'dados_para_clusterizacao_{first_year}_a_{last_year}.xlsx')
+    if last_year:
+
+        # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
+        arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS,
+                                                  f'dados_para_clusterizacao_{first_year}_a_{last_year}.xlsx')
+
+    else:
+
+        # Coleta PATH do arquivo "xlsx" gerado no script prepara_dados.py
+        arquivo_para_clusterizacao = os.path.join(consts.DIRETORIO_DADOS,
+                                              f'dados_para_clusterizacao_{first_year}.xlsx')
     # Lê o arquivo "xlsx" referido como um objeto pandas DataFrame e coloca a coluna CNES como índice
     df_hosp_pubs = pd.read_excel(arquivo_para_clusterizacao)
 
@@ -126,11 +134,20 @@ def clusteriza(first_year=2017, last_year=2019):
     #
     df_hosp_pubs['CNES'] = df_hosp_pubs['CNES'].apply(lambda x: str(x).zfill(7))
 
-    # Salva "df_hosp_pub" em arquivo xlsx com a coluna CLUSTER adicionada
-    df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_clusterizados_{first_year}_a_{last_year}.xlsx'),
-                          index=False)
+    if last_year:
+
+        # Salva "df_hosp_pub" em arquivo xlsx com a coluna CLUSTER adicionada
+        df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_clusterizados_{first_year}_a_{last_year}.xlsx'),
+                              index=False)
+
+    else:
+
+        # Salva "df_hosp_pub" em arquivo xlsx com a coluna CLUSTER adicionada
+        df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_clusterizados_{first_year}.xlsx'),
+                              index=False)
+
 
 
 if __name__ == '__main__':
 
-    clusteriza(2017, 2019)
+    clusteriza(2019)
