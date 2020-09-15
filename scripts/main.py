@@ -28,24 +28,27 @@ def main_range(DATABASE_URI, first_period='01-2017', last_period='12-2019'):
     executa_deas(first_period, last_period)
 
 
-tipo = input('Deseja realizar DEA para um ano específico ou faixa de meses (1 ou 2)? \n')
 
-# Dados de conexão
-DB_NAME = 'dbsus'
-DB_USER = 'Eric'
-DB_PASS = 'teste'
-DB_TYPE = 'postgresql'
-DB_HOST = '127.0.0.1'
-DB_PORT = '5432'
-DB_DRIVER = 'psycopg2'
+if __name__ == '__main__':
 
-# URI
-DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
+    # Dados de conexão
+    DB_NAME = 'dbsus'
+    DB_USER = 'Eric'
+    DB_PASS = 'teste'
+    DB_TYPE = 'postgresql'
+    DB_HOST = '127.0.0.1'
+    DB_PORT = '5432'
+    DB_DRIVER = 'psycopg2'
 
-if tipo == '1':
+    tipo = input('Deseja realizar DEA para um ano específico ou faixa de meses (1 ou 2)? \n')
 
-    main_specific(DATABASE_URI, 2019)
+    # URI
+    DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 
-else:
+    if tipo == '1':
 
-    main_range(DATABASE_URI, '01-2017', '02-2020')
+        main_specific(DATABASE_URI, 2019)
+
+    else:
+
+        main_range(DATABASE_URI, '01-2017', '02-2020')
