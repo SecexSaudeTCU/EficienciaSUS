@@ -27,7 +27,7 @@ def main_range(DATABASE_URI, first_period='01-2017', last_period='12-2019'):
     executa_deas(first_period, last_period)
 
 
-tipo = input('Deseja análise para um ano específico ou faixa de meses (1 ou 2)? \n')
+tipo = input('Deseja realizar DEA para um ano específico ou faixa de meses (1 ou 2)? \n')
 
 # Dados de conexão
 DB_NAME = 'dbsus'
@@ -47,4 +47,4 @@ if tipo == '1':
 
 else:
 
-    main_range(DATABASE_URI, '01-2017', '12-2019')
+    main_range(DATABASE_URI, '01-2017', '02-2020')
