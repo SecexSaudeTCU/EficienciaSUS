@@ -226,7 +226,7 @@ def obtem_dados_dea(DATABASE_URI, first_period='01-2017', last_period='12-2019')
                 mes = mes.zfill(2)
 
                 print('\n********************************')
-                print(f'{year}-{month}')
+                print(f'{ano}-{mes}')
 
                 queries_dados_dea(engine, ano, mes)
 
@@ -409,4 +409,4 @@ if __name__ == '__main__':
     # URI
     DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 
-    obtem_dados(DATABASE_URI, '01-2017', '12-2019')
+    obtem_dados(DATABASE_URI, '01-2020', '02-2020')
