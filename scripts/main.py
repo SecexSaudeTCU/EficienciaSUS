@@ -1,6 +1,7 @@
-from obtem_dados import obtem_dados
+import obtem_dados_specific
+import obtem_dados_range
 from clusteriza import clusteriza
-from prepara_dados_range import prepara_dados_range
+from prepara_dados import prepara_dados_specific, prepara_dados_range
 from executa_dea import executa_deas
 
 

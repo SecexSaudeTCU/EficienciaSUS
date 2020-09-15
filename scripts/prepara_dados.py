@@ -19,7 +19,7 @@ import consts
 
 
 
-def insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, coluna_nova):
+def _insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, coluna_nova):
     """
     Insere a coluna coluna_nova antes da coluna coluna_posicao do objeto pandas DataFrame
     frame cujos valores pertencem ao objeto dict dicionario e foram obtidas através da
@@ -40,7 +40,7 @@ def insere_coluna_antes_em_df(frame, dicionario, coluna_base, coluna_posicao, co
     frame.insert(loc=index_coluna_posicao, column=coluna_nova, value=list_valores)
 
 
-def retorna_faixa_leitos(num_leitos):
+def _retorna_faixa_leitos(num_leitos):
     """
     Retorna um valor 'categórico' de faixa de valor dependendo do valor inteiro
     num_leitos
@@ -54,23 +54,23 @@ def retorna_faixa_leitos(num_leitos):
     return 'Mais de 300'
 
 
-def trata_dados_para_dea(df, df_cluster):
+def _trata_dados_para_dea(df, df_cluster):
 
     # Insere a coluna REGIAO antes da coluna UF em "df" usando o objeto dict "UF_REGIAO"
-    insere_coluna_antes_em_df(df, consts.UF_REGIAO, 'UF', 'UF', 'REGIAO')
+    _insere_coluna_antes_em_df(df, consts.UF_REGIAO, 'UF', 'UF', 'REGIAO')
 
     # Insere a coluna ESFERA_FEDERATIVA antes da coluna TIPO_UNIDADE em "df" usando o objeto...
     # dict "NATJUR_ESFERA"
-    insere_coluna_antes_em_df(df, consts.NATJUR_ESFERA, 'NAT_JURIDICA', 'TIPO_UNIDADE', 'ESFERA_FEDERATIVA')
+    _insere_coluna_antes_em_df(df, consts.NATJUR_ESFERA, 'NAT_JURIDICA', 'TIPO_UNIDADE', 'ESFERA_FEDERATIVA')
 
     # Insere a coluna TIPO_ADMIN_PUB antes da coluna TIPO_UNIDADE em "df" usando o objeto dict...
     # "NATJUR_TIPO_ADMIN_PUB"
-    insere_coluna_antes_em_df(df, consts.NATJUR_TIPO_ADMIN_PUB, 'NAT_JURIDICA', 'TIPO_UNIDADE', 'TIPO_ADMIN_PUB')
+    _insere_coluna_antes_em_df(df, consts.NATJUR_TIPO_ADMIN_PUB, 'NAT_JURIDICA', 'TIPO_UNIDADE', 'TIPO_ADMIN_PUB')
 
     # Coleta o index do elemento 'NAT_JURIDICA' pertencente ao objeto list "df.columns.to_list()"
     pos_coluna_nat_jur = df.columns.to_list().index('NAT_JURIDICA')
-    # Aplica a função "retorna_faixa_leitos" a cada elemento da coluna CNES_LEITOS_SUS de "df"
-    faixa_leitos = df['CNES_LEITOS_SUS'].apply(retorna_faixa_leitos)
+    # Aplica a função "_retorna_faixa_leitos" a cada elemento da coluna CNES_LEITOS_SUS de "df"
+    faixa_leitos = df['CNES_LEITOS_SUS'].apply(_retorna_faixa_leitos)
     # Insere em "df" a coluna FAIXA_LEITOS antes da coluna NAT_JURIDICA tendo os valores...
     # contidos em "faixa_leitos"
     df.insert(loc=pos_coluna_nat_jur, column='FAIXA_LEITOS', value=faixa_leitos)
@@ -134,7 +134,7 @@ def prepara_dados_specific(year=2019):
     # Lê o arquivo xlsx "dados_para_dea_'year'" como um objeto pandas DataFrame
     df_ano = pd.read_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_para_dea_{year}.xlsx'))
 
-    df_hosp_pubs = trata_dados_para_dea(df_ano, df_cluster)
+    df_hosp_pubs = _trata_dados_para_dea(df_ano, df_cluster)
 
     df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_tratados_dea_{year}.xlsx'), index=False)
 
@@ -168,7 +168,7 @@ def prepara_dados_range(first_period='01-2017', last_period='12-2019'):
                 # Lê o arquivo xlsx "dados_para_dea_'year'_'month'" como um objeto pandas DataFrame
                 df_mes = pd.read_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_para_dea_{ano}_{mes}.xlsx'))
 
-                df_hosp_pubs = trata_dados_para_dea(df_mes, df_cluster)
+                df_hosp_pubs = _trata_dados_para_dea(df_mes, df_cluster)
 
                 df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_tratados_dea_{ano}_{mes}.xlsx'), index=False)
 
