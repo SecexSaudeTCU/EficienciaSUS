@@ -17,6 +17,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 
 import consts
@@ -55,8 +56,9 @@ def clusteriza(first_year=2017, last_year=False):
     # Cria objeto pandas DataFrame apenas das colunas de procedimentos
     df_para_clust = df_hosp_pubs[colunas_para_clust]
 
-    # Inicializa objeto list
+    # Inicializa objetos list
     WCSS = [] # WCSS = Within-Cluster Sum of Squares
+    SC = [] # Silhouette Coefficient
 
     # Objeto list cujos elementos correspondem à quantidade de clusters
     K = list(range(1, 30))
@@ -78,6 +80,13 @@ def clusteriza(first_year=2017, last_year=False):
             # Salva o número de clusters da iteração anterior e interrompe o loop
             numero_clusters = k - 1
             break
+
+        # Caso o número de clusters seja maior que 1
+        if not k == 1:
+            # Calcula o coeficiente de silhueta
+            sil_coeff = silhouette_score(df_para_clust, kmeans.labels_, metric='euclidean')
+            # Aloca o coeficiente de silhueta ao objeto list SC
+            SC.append(sil_coeff)
 
     # Novo objeto list cujos elementos correspondem à quantidade de clusters que respeitam o...
     # limitante superior NUMERO_MINIMO_UNIDADES_POR_CLUSTER
@@ -102,26 +111,44 @@ def clusteriza(first_year=2017, last_year=False):
 
     print('O número ótimo de clusters é:', D.index(max(D)) + 1)
 
-    # Mostra os resultados
+    print('WCSS', WCSS, len(WCSS))
+    print('D', D, len(D))
+    print('SC', SC, len(SC))
+    print('max SC', max(SC))
+
+    # Mostra resultados do método do cotovelo
     plt.figure(figsize=(10,5))
-    plt.plot(K, WCSS, '-bo', label='WCSS')
-    plt.plot(K, D, '-ro', label='Distância')
-    plt.annotate('Valor ótimo de k', np.array([D.index(max(D)) + 1 + 0.2, WCSS[D.index(max(D))] + 0.2]))
-    plt.xlabel('k')
-    plt.ylabel('WCSS / Distância')
-    plt.title('The Elbow Method showing the optimal k')
+    plt.plot(K, WCSS, '-bo', label='Gráfico da soma do quadrado das distâncias intra-agrupamentos')
+    plt.plot([p1[0], p2[0]], [p1[1], p2[1]], color='red', label='Reta para obtenção do número "ótimo" de agrupamentos')
+    plt.annotate('Número "ótimo" de agrupamentos', np.array([D.index(max(D)) + 1 + 0.2, WCSS[D.index(max(D))] + 0.2]))
+    plt.xticks(range(min(K), max(K) + 1))
+    plt.xlabel('Número de agrupamentos')
+    plt.ylabel('Soma do quadrado das distâncias intra-agrupamentos')
+    plt.legend()
+    plt.show()
+
+    # Mostra resultados do método do coeficiente de silhueta
+    plt.figure(figsize=(10,5))
+    plt.plot(K[1:], SC, '-bo', label='Gráfico do Coeficiente de Silhueta')
+    plt.annotate('Número "ótimo" de agrupamentos', np.array([SC.index(max(SC)) + 2 + 0.2, max(SC)]))
+    plt.xticks(range(min(K[1:]), max(K[1:]) + 1))
+    plt.xlabel('Número de agrupamentos')
+    plt.ylabel('Coeficiente de Silhueta')
     plt.legend()
     plt.show()
 
     # Número de clusters arbitrado
     NUMERO_CLUSTERS = 10
 
-    # Número de clusters ótimo
+    # Número de clusters "ótimo"
     NUMERO_CLUSTERS = D.index(max(D)) + 1
+    print(NUMERO_CLUSTERS)
 
     # Treina kmeans com o número de cluster identificado anteriormente
     modelo = KMeans(n_clusters=NUMERO_CLUSTERS, random_state=42)
     modelo.fit(df_para_clust)
+
+    print(pd.value_counts(modelo.labels_).sort_values(ascending=False).to_list())
 
     # Elimina colunas desnecessárias
     nomes_colunas = df_hosp_pubs.columns.to_list()
@@ -150,4 +177,4 @@ def clusteriza(first_year=2017, last_year=False):
 
 if __name__ == '__main__':
 
-    clusteriza(2019)
+    clusteriza(2017, 2020)

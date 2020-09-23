@@ -143,7 +143,6 @@ class ModeloDEA:
             arquivo_resultado_basename = os.path.splitext(os.path.basename(arquivo_df_cluster))[0] + '_result.xlsx'
             # Cria arquivo "xlsx" de resultados do cluster "cluster" no diretório "diretorio_saida"
             arquivo_resultado = os.path.join(diretorio_saida, arquivo_resultado_basename)
-            print(arquivo_resultado)
             # Lê o arquivo em formato "xlsx" "arquivo_resultado" como um objeto pandas DataFrame...
             # e desconsidera a primeira linha
             df_resultado = pd.read_excel(arquivo_resultado, skiprows=1)
@@ -151,7 +150,7 @@ class ModeloDEA:
             # Adiciona resultado de eficiência ao dataframe original e salva resultado
             df.loc[df.index[df[coluna_cluster] == cluster], 'EFICIENCIA'] = df_resultado['Efficiency'].to_list()
 
-        # Remove undiades com eficiência 'Infeasible' ou 'Unbounded'
+        # Remove hospitais com eficiência 'Infeasible' ou 'Unbounded'
         df_feasible = df[pd.to_numeric(df['EFICIENCIA'], errors='coerce').notnull()]
         df_feasible['EFICIENCIA'] = df_feasible['EFICIENCIA'].astype('float')
 

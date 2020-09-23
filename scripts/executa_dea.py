@@ -61,7 +61,7 @@ def _salva_em_planilha_xlsx(first_period, last_period, year, month):
     df = pd.read_excel(os.path.join(consts.DIRETORIO_RESULTADOS, 'resultado_dados_tratados_dea_{}_{}.xlsx'.format(year, month)))
 
     # Colocaos dados de parte das colunas de "df" na planilha 'ano'-'mes' do arquivo xlsx "resultados_dea_'first_period'_'last_period'"
-    df[consts.COLUNAS_CATEGORICAS + ['EFICIENCIA' + 'EFICIENCIA_NORMALIZADA']].to_excel(writer, sheet_name='{}-{}'.format(year, month), index=False)
+    df[consts.COLUNAS_CATEGORICAS + ['EFICIENCIA', 'EFICIENCIA_NORMALIZADA']].to_excel(writer, sheet_name='{}-{}'.format(year, month), index=False)
 
     # Salva os dados
     writer.save()
@@ -137,7 +137,7 @@ def executa_deas(first_period='01-2017', last_period='12-2019'):
 
     # Abre o arquivo xlsx "resultado_dados_tratados_dea_'ano'_'mes'"
     workbook = \
-        openpyxl.load_workbook(os.path.join(consts.DIRETORIO_RESULTADOS, 'resultado_dados_tratados_dea_{}_{}.xlsx'.format(year, month)))
+        openpyxl.load_workbook(os.path.join(consts.DIRETORIO_RESULTADOS, 'resultados_dea_{}_{}.xlsx'.format(first_period, last_period)))
 
     # Acessa o atributo "sheetnames" de "workbook"
     sheets_names = workbook.sheetnames
@@ -146,11 +146,11 @@ def executa_deas(first_period='01-2017', last_period='12-2019'):
     workbook.remove(workbook.get_sheet_by_name('Sheet1'))
 
     # Salva os dados
-    workbook.save(os.path.join(consts.DIRETORIO_RESULTADOS, 'resultado_dados_tratados_dea_{}_{}.xlsx'.format(year, month)))
+    workbook.save(os.path.join(consts.DIRETORIO_RESULTADOS, 'resultados_dea_{}_{}.xlsx'.format(first_period, last_period)))
 
 
 
 if __name__ == '__main__':
 
-    executa_dea(2019)
-    #executa_deas('01-2017', '12-2019')
+    #executa_dea(2019)
+    executa_deas('01-2017', '02-2020')

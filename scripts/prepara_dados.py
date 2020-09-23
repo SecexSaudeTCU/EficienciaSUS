@@ -185,7 +185,7 @@ def prepara_dados_range(first_period='01-2017', last_period='12-2019'):
                 # Lê o arquivo xlsx "dados_para_dea_'year'_'month'" como um objeto pandas DataFrame
                 df_mes = pd.read_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_para_dea_{ano}_{mes}.xlsx'))
 
-                df_hosp_pubs = trata_dados_para_dea(df_mes, df_cluster)
+                df_hosp_pubs = _trata_dados_para_dea(df_mes, df_cluster)
 
                 df_hosp_pubs.to_excel(os.path.join(consts.DIRETORIO_DADOS, f'dados_tratados_dea_{ano}_{mes}.xlsx'), index=False)
 
@@ -193,5 +193,5 @@ def prepara_dados_range(first_period='01-2017', last_period='12-2019'):
 
 if __name__ == '__main__':
 
-    prepara_dados_specific(2019)
-    #prepara_dados_range('01-2017', '12-2019')
+    #prepara_dados_specific(2019)
+    prepara_dados_range('01-2017', '02-2020')

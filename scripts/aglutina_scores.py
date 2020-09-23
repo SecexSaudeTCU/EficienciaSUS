@@ -6,7 +6,7 @@ import pandas as pd
 import consts
 
 first_period='01-2017'
-last_period='12-2019'
+last_period='02-2020'
 
 # Coleta a substring referente ao ano e a transforma no tipo int
 first_year = int(first_period[3:])

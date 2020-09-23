@@ -258,6 +258,7 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
     print('Query no CNES local (PostgreSQL)...')
     #
     df_cnes = pd.read_sql(f'''SELECT DISTINCT "CNES_ID" AS "CNES",
+                                     "UF_ST" AS "UF",
                                      "TIPO" AS "TIPO_UNIDADE",
                                      "NATUREZA" AS "NAT_JURIDICA"
                               FROM cnes_st.stbr
@@ -299,6 +300,8 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
                           GROUP BY "PACODUNI_ID", SUBSTRING("PAPROC_ID", 1, 4)
                        ''', con=engine)
 
+    print('Após queries...')
+
     #
     df_sia = df2.copy()
 
@@ -327,22 +330,16 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
     df_sih_sia.sort_values(['CNES', 'SUBGRP_PROC'])
 
     #
-    df_id_cnes_sih_sia = pd.merge(df_cnes[['CNES']], df_sih_sia, how='left', left_on='CNES', right_on='CNES')
+    df_sih_sia['PERCENTUAL_VALOR'] = df_sih_sia['VALOR_SUBGRP_PROC']/df_sih_sia['VALOR_TOTAL_PER_CNES']
 
     #
-    df_id_cnes_sih_sia['PERCENTUAL_VALOR'] = df_id_cnes_sih_sia['VALOR_SUBGRP_PROC']/df_id_cnes_sih_sia['VALOR_TOTAL_PER_CNES']
+    df_sih_sia = df_sih_sia.drop(['VALOR_SUBGRP_PROC', 'VALOR_TOTAL_PER_CNES'], axis=1)
 
     #
-    df_id_cnes_sih_sia['PERCENTUAL_VALOR'].fillna(0, inplace=True)
+    df_sih_sia.fillna({'PERCENTUAL_VALOR': 0.}, inplace=True)
 
     #
-    df_id_cnes_sih_sia = df_id_cnes_sih_sia.drop(['VALOR_SUBGRP_PROC', 'VALOR_TOTAL_PER_CNES'], axis=1)
-
-    #
-    df_id_cnes_sih_sia.fillna({'SUBGRP_PROC': 'NONE', 'PERCENTUAL_VALOR': 0.}, inplace=True)
-
-    #
-    df_subproc = (df_id_cnes_sih_sia.groupby(['CNES', 'SUBGRP_PROC'])['PERCENTUAL_VALOR'].sum().unstack().fillna(0))
+    df_subproc = (df_sih_sia.groupby(['CNES', 'SUBGRP_PROC'])['PERCENTUAL_VALOR'].sum().unstack().fillna(0))
 
     #
     df_subproc = df_subproc.rename_axis(None, axis=1)
@@ -351,9 +348,19 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
     df_subproc.reset_index(inplace=True)
 
     #
-    df_subproc = df_subproc.drop(['NONE'], axis=1)
+    df = pd.merge(df_cnes, df_subproc, how='inner', left_on='CNES', right_on='CNES')
 
-    df = pd.merge(df_cnes, df_subproc, how='right', left_on='CNES', right_on='CNES')
+    #
+    df.fillna(0, inplace=True)
+
+    #
+    df['SOMA'] = df.iloc[:, 4:].sum(axis=1)
+
+    #
+    df = df[df['SOMA'] > 0]
+
+    #
+    df = df.drop('SOMA', axis=1)
 
     # Coleta o index do elemento 'NAT_JURIDICA' pertencente ao objeto list "df.columns.to_list()"...
     # e acresce o inteiro 1
@@ -390,7 +397,7 @@ def obtem_dados(DATABASE_URI, first_period='01-2017', last_period='12-2019'):
     first_year = int(first_period[3:])
     last_year = int(last_period[3:])
 
-    obtem_dados_dea(DATABASE_URI, first_period, last_period)
+    #obtem_dados_dea(DATABASE_URI, first_period, last_period)
     obtem_dados_clusterizacao(DATABASE_URI, first_year, last_year)
 
 
@@ -409,4 +416,4 @@ if __name__ == '__main__':
     # URI
     DATABASE_URI = '%s+%s://%s:%s@%s:%s/%s' % (DB_TYPE, DB_DRIVER, DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME)
 
-    obtem_dados(DATABASE_URI, '01-2020', '02-2020')
+    obtem_dados(DATABASE_URI, '01-2017', '02-2020')
