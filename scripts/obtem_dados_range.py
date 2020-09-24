@@ -23,7 +23,7 @@ def queries_dados_dea(engine, year, month):
         # Queries no CNES local:
         print('Queries no CNES local (PostgreSQL)...')
         # Construção da coluna CNES_SALAS no mês "month" do ano "year"
-        df1 = pd.read_sql(f'''SELECT DISTINCT "CNES_ID" AS "CNES",
+        df1 = pd.read_sql(f'''SELECT "CNES_ID" AS "CNES",
                                      "UF_ST" AS "UF",
                                      "MUNNOME" AS "MUNICIPIO",
                                      "GESTAO",
@@ -257,7 +257,7 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
 
     print('Query no CNES local (PostgreSQL)...')
     #
-    df_cnes = pd.read_sql(f'''SELECT DISTINCT "CNES_ID" AS "CNES",
+    df_cnes = pd.read_sql(f'''SELECT "CNES_ID" AS "CNES",
                                      "UF_ST" AS "UF",
                                      "TIPO" AS "TIPO_UNIDADE",
                                      "NATUREZA" AS "NAT_JURIDICA"
@@ -358,6 +358,12 @@ def obtem_dados_clusterizacao(DATABASE_URI, first_year=2017, last_year=2019):
 
     #
     df = df[df['SOMA'] > 0]
+
+    #
+    df.drop_duplicates(subset='CNES', keep='first', inplace=True)
+
+    #
+    df.reset_index(drop=True, inplace=True)
 
     #
     df = df.drop('SOMA', axis=1)

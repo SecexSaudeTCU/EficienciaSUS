@@ -111,19 +111,14 @@ def clusteriza(first_year=2017, last_year=False):
 
     print('O número ótimo de clusters é:', D.index(max(D)) + 1)
 
-    print('WCSS', WCSS, len(WCSS))
-    print('D', D, len(D))
-    print('SC', SC, len(SC))
-    print('max SC', max(SC))
-
     # Mostra resultados do método do cotovelo
     plt.figure(figsize=(10,5))
-    plt.plot(K, WCSS, '-bo', label='Gráfico da soma do quadrado das distâncias intra-agrupamentos')
-    plt.plot([p1[0], p2[0]], [p1[1], p2[1]], color='red', label='Reta para obtenção do número "ótimo" de agrupamentos')
+    plt.plot(K, WCSS, '-bo', label='Gráfico da Soma dos Quadrados das Distâncias Intra-Agrupamentos')
+    plt.plot([p1[0], p2[0]], [p1[1], p2[1]], color='red', label='Reta para cômputo do número "ótimo" de agrupamentos')
     plt.annotate('Número "ótimo" de agrupamentos', np.array([D.index(max(D)) + 1 + 0.2, WCSS[D.index(max(D))] + 0.2]))
     plt.xticks(range(min(K), max(K) + 1))
     plt.xlabel('Número de agrupamentos')
-    plt.ylabel('Soma do quadrado das distâncias intra-agrupamentos')
+    plt.ylabel('Soma dos quadrados das distâncias intra-agrupamentos')
     plt.legend()
     plt.show()
 
@@ -138,17 +133,14 @@ def clusteriza(first_year=2017, last_year=False):
     plt.show()
 
     # Número de clusters arbitrado
-    NUMERO_CLUSTERS = 10
+    NUMERO_CLUSTERS = 1
 
     # Número de clusters "ótimo"
-    NUMERO_CLUSTERS = D.index(max(D)) + 1
-    print(NUMERO_CLUSTERS)
+    #NUMERO_CLUSTERS = D.index(max(D)) + 1
 
     # Treina kmeans com o número de cluster identificado anteriormente
     modelo = KMeans(n_clusters=NUMERO_CLUSTERS, random_state=42)
     modelo.fit(df_para_clust)
-
-    print(pd.value_counts(modelo.labels_).sort_values(ascending=False).to_list())
 
     # Elimina colunas desnecessárias
     nomes_colunas = df_hosp_pubs.columns.to_list()
